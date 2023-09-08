@@ -1,0 +1,6 @@
+сент. 06, 2023 3:32:54 PM Main main
+INFO: This is an informational message
+сент. 06, 2023 3:32:54 PM Main main
+WARNING: This is a warning message
+сент. 06, 2023 3:32:54 PM Main main
+SEVERE: This is a severe message
