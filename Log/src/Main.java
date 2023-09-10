@@ -118,95 +118,84 @@ import java.util.logging.SimpleFormatter;
 //        }
 //    }
 //}
-class BubbleSort {
-    private static File log;
-    private static FileWriter fileWriter;
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    public static void sort(int[] mas) {
-        Logger logger = Logger.getLogger(BubbleSort.class.getName());
-        StringBuilder str = new StringBuilder();
-        Date date = new Date();
-        Map<String, String> map = new HashMap<String, String>();
-        String newdata ="";
-        try {
-            FileWriter fileWriterTest = new FileWriter("log.txt");
-//            //Создаем FileHandler, указываем путь к файлу и максимальный размер файла ( в битах)
-//            FileHandler fileHandler = new FileHandler("log.txt");
-//
-//            //настраиваем формат сообщений
-//            fileHandler.setFormatter(new SimpleFormatter());
-//
-//            //устанавливаем FileHandler как обработчик для логера
-//            logger.addHandler(fileHandler);
-//
-//            //Устанавливаем уровень логирования( например - ALL, INFO, WARNING, SEVERE и т.д)
-//            logger.setLevel(Level.INFO);
-//
-//
-//            //примеры логирования
-////            logger.info("This is an informational message");
-////            logger.warning("This is a warning message");
-////            logger.severe("This is a severe message");
-            int len = mas.length;
-            int max =mas[len-1];
-            for (int i = 0; i < len; i++)
-            {
+    class BubbleSort {
+        private static File log;
+        private static FileWriter fileWriter;
 
-                fileWriterTest.write(sdf.format(date) + " [" );
-                for (int j = i; j <len; j++)
-                {
+        public static void sort(int[] mas) {
+            try {
+                log = new File("log.txt");
+                log.createNewFile();
+                fileWriter = new FileWriter(log);
+                bubbleSort(mas);
 
-                    if (mas[j] < mas[i]){
-                        int tmp = mas[i];
-                        mas[i] = mas[j];
-                        mas[j] = tmp;
-                      }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            }
+        }
 
-                for(int z = 0; z <len; z++) {
-                    if (z < len - 1) {
-                        fileWriterTest.write(Integer.toString(mas[z]) + ", ");
-                    }else
-                    {
-                        fileWriterTest.write(Integer.toString(mas[z]) );
+        private static int[] bubbleSort(int[] mas) {
+            boolean isSorted = false;
+            int buffer;
+
+            while (!isSorted) {
+                isSorted = true;
+                for (int i = 0; i < mas.length - 1; i++) {
+                    if (mas[i] > mas[i + 1]) {
+                        isSorted = false;
+
+                        buffer = mas[i];
+                        mas[i] = mas[i + 1];
+                        mas[i + 1] = buffer;
                     }
                 }
-                fileWriterTest.write("]\n");
+                logStep(Arrays.toString(mas));
             }
-            fileWriterTest.flush();
-            System.out.println(newdata);
-        }catch(IOException e) {
-            e.printStackTrace();
+            return mas;
+        }
 
+        public static void logStep(String note) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                String timestamp = dateFormat.format(new Date());
+                fileWriter.write(timestamp + " " + note + "\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
-public class Main{
-    public static void main(String[] args) {
-        int[] arr = {};
 
-        if (args.length == 0) {
-            // При отправке кода на Выполнение, вы можете варьировать эти параметры
-            arr = new int[]{9, 4, 8, 3, 1};
-        }
-        else{
-            arr = Arrays.stream(args[0].split(", "))
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
-        }
+public class Main {
+        public static void main(String[] args) {
+            int[] arr = {};
 
-        BubbleSort ans = new BubbleSort();
-        ans.sort(arr);
-
-        try (BufferedReader br = new BufferedReader(new FileReader("log.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
+            if (args.length == 0) {
+                arr = new int[]{9, 4, 8, 3, 1};
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            else{
+                arr = Arrays.stream(args[0].split(", "))
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+            }
+
+            BubbleSort ans = new BubbleSort();
+            ans.sort(arr);
+
+            try (BufferedReader br = new BufferedReader(new FileReader("log.txt"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-    }
-}
+        }
