@@ -3,9 +3,24 @@ package ShopPC;
 import java.util.*;
 
 public class ShopPC {
-    public static void filterPCs(List<PC> pcs) {
-        Scanner scanner = new Scanner(System.in);
+    private List<PC>shopPC = new ArrayList<PC>();
 
+    public void Load(PC pc){
+        shopPC.add(pc);
+    }
+
+    @Override
+    public String toString() {
+        return "ShopPC{" +
+                "shopPC=" + shopPC +
+                '}';
+    }
+
+    public static Map<String, Object> filterParams = new HashMap<>();
+    public  void filterPC() {
+
+
+        Scanner scanner = new Scanner(System.in);
         Map<String, Object> filterParams = new HashMap<>();
         System.out.println("Введите цифру, соответствующую необходимому критерию:");
         System.out.println("1 - ОЗУ");
@@ -41,7 +56,7 @@ public class ShopPC {
         }
 
         List<PC> filteredPCs = new ArrayList<>();
-        for (PC pc : pcs) {
+        for (PC pc : shopPC) {
             boolean isMatched = true;
             for (Map.Entry<String, Object> entry : filterParams.entrySet()) {
                 switch (entry.getKey()) {

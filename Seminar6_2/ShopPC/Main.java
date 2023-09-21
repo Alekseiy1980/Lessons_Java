@@ -1,7 +1,10 @@
 package ShopPC;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
 
@@ -17,7 +20,8 @@ public class Main {
         }
         Random random = new Random();
         int count = 5;
-
+        PC [] pc = new PC[count];
+        ShopPC shopPC = new ShopPC();
 //        int pic = random.nextInt(Brend.values().length);
 //        String brend = String.valueOf(Brend.values()[pic]);
 //        pic = random.nextInt(Os.values().length);
@@ -70,9 +74,18 @@ public class Main {
                     case 4: hd = 2;break;
                     case 5: hd = 3;break;
                 }
-                PC pc = new PC(brend,os,display,osy,vCard,hd);
-
-                System.out.println(pc.toString());}
+                 pc[i] = new PC(brend,os,display,osy,vCard,hd);
+                shopPC.Load(pc[i]);
+//                System.out.println(pc[i]);
+                }
+//        System.out.println("-------------------");
+//        System.out.println(pc[2]);
+//
+//
+//
+//        System.out.println("-------------");
+        System.out.println(shopPC);
+        shopPC.filterPC();
 
 
 //           System.out.println(brend + " " + OS + " " + display + " " + osy + " " + vCard + " " + hd );
